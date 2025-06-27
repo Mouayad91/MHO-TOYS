@@ -1,0 +1,33 @@
+### ——— Java / Spring Boot ———
+# build outputs
+/target/
+/build/
+/out/
+*.class
+*.jar
+*.war
+*.ear
+
+# IDEs
+.idea/
+*.iml
+*.ipr
+.vscode/
+
+### ——— Node / React ———
+node_modules/
+dist/
+build/
+
+### ——— OS & tooling ———
+.DS_Store
+Thumbs.db
+
+### ——— ⚠️ Sensitive Spring files ⚠️ ———
+# Hide ALL application-*.properties copies
+backend/src/main/resources/application.properties
+backend/src/main/resources/application-*.properties
+
+### ——— Optional: environment files ———
+.env
+.env.*
