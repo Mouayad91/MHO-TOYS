@@ -10,7 +10,7 @@ public class BackendApplication {
 		SpringApplication.run(BackendApplication.class, args);
 
 		System.out.println("**********************************");
-		System.out.println(" Application started successfully ");
+		System.out.println("Application started successfully!!");
 		System.out.println("**********************************");
 	}
 
