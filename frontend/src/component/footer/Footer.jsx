@@ -40,7 +40,7 @@ const Footer = () => {
                     
                     <div className="text-center border-t border-gray-700 pt-4">
                         <p className="text-gray-400 text-sm">
-                            © MHO TOYS All right reserved
+                            © MHO TOYS. All right reserved
                         </p>
                     </div>
                 </div>
