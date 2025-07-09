@@ -22,7 +22,7 @@ build/
 ### ——— OS & tooling ———
 .DS_Store
 Thumbs.db
-
+ 
 ### ———Sensitive Spring files———
 backend/src/main/resources/application.properties
 backend/src/main/resources/application-*.properties
