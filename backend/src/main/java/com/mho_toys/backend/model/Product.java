@@ -9,17 +9,17 @@ import java.time.Instant;
 
 
 @Entity
-@Table(name = "toys")
+@Table(name = "products")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Toy {
+public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long toyId;
+    private Long productId;
 
 
     @NotBlank( message = "Toy name cannot be blank")
@@ -35,9 +35,8 @@ public class Toy {
     private Double price;
 
     @NotNull(message = "Toy age group cannot be null")
-    @Min(value = 1, message = "Toy age group must be at least 1")
-    @Max(value = 10, message = "Toy age group must be at most 10")
-    private int ageRange;
+    @Pattern(regexp = "^[0-9]+-[0-9]+$", message = "Age range must be in the format 'min-max'")
+    private String ageRange;
 
     private String imageUrl;
 

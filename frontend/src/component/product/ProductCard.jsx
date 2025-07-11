@@ -7,7 +7,7 @@ const ProductCard = ({ product }) => {
   const [showModal, setShowModal] = useState(false);
 
   // Age ranges for different toys
-  const ageRanges = [
+  const ageRange = [
     "0-6 Months",
     "6-12 Months",
     "1-2 Years",
@@ -19,8 +19,8 @@ const ProductCard = ({ product }) => {
 
 
   const getProductAge = (productId) => {
-    const index = parseInt(productId) % ageRanges.length;
-    return ageRanges[index];
+    const index = parseInt(productId) % ageRange.length;
+    return ageRange[index];
   };
 
   const getProductRating = (productId) => {
