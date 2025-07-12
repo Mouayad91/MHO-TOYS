@@ -10,4 +10,6 @@ public interface ProductService {
 
     List<ProductDTO> getAllToys();
     ProductDTO addProduct(ProductDTO product);
+    ProductDTO updateProduct(Long productId,ProductDTO productDTO);
+    ProductDTO deleteProduct(Long productId);
 }
