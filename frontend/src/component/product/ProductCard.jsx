@@ -1,33 +1,31 @@
 import React from "react";
 import { GiShoppingCart } from "react-icons/gi";
-import { FaHeart, FaRegHeart, FaStar, FaStarHalfAlt, FaTimes } from "react-icons/fa";
-import { useState } from "react";
+import {
+  FaHeart,
+  FaRegHeart,
+  FaStar,
+  FaStarHalfAlt,
+  FaTimes,
+} from "react-icons/fa";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
+
 const ProductCard = ({ product }) => {
-  const [isFavorited, setIsFavorited] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [isFavorited, setIsFavorited] = React.useState(false);
+  const [showModal, setShowModal] = React.useState(false);
 
-  // Age ranges for different toys
-  const ageRange = [
-    "0-6 Months",
-    "6-12 Months",
-    "1-2 Years",
-    "2-3 Years",
-    "3-4 Years",
-    "4-5 Years",
-    "5+ Years",
-  ];
-
-
-  const getProductAge = (productId) => {
-    const index = parseInt(productId) % ageRange.length;
-    return ageRange[index];
+  const getImageSrc = (imageUrl) => {
+    if (!imageUrl) return "https://via.placeholder.com/300x300?text=No+Image";
+    if (imageUrl.startsWith("http") || imageUrl.startsWith("data:")) {
+      return imageUrl;
+    }
+    return `http://localhost:8080/images/${imageUrl}`;
   };
 
   const getProductRating = (productId) => {
-
     const seed = parseInt(productId);
-    const rating = 4.0 + (seed * 0.123456789) % 1.0; // Creates variation between 4.0-5.0
-    return Math.round(rating * 10) / 10; // Round to 1 decimal place
+    const rating = 4.0 + (seed * 0.123456789) % 1.0;
+    return Math.round(rating * 10) / 10;
   };
 
   const renderStars = (rating) => {
@@ -35,244 +33,154 @@ const ProductCard = ({ product }) => {
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 !== 0;
 
-
     for (let i = 0; i < fullStars; i++) {
-      stars.push(<FaStar key={i} className="text-yellow-400 w-4 h-4" />);
+      stars.push(<FaStar key={i} className="text-yellow-400" />);
     }
-
     if (hasHalfStar) {
-      stars.push(
-        <FaStarHalfAlt key="half" className="text-yellow-400 w-4 h-4" />
-      );
+      stars.push(<FaStarHalfAlt key="half" className="text-yellow-400" />);
     }
-
-    // Empty stars
-    const emptyStars = 5 - Math.ceil(rating);
+    const emptyStars = 5 - stars.length;
     for (let i = 0; i < emptyStars; i++) {
       stars.push(
-        <FaStar key={`empty-${i}`} className="text-gray-300 w-4 h-4" />
+        <FaStar key={`empty-${i}`} className="text-gray-300" />
       );
     }
-
     return stars;
   };
 
-  const handleAddToCart = (e) => {
-    e.stopPropagation(); 
-    console.log("Added to cart:", product.name);
-  };
-
-  const toggleFavorite = (e) => {
-    e.stopPropagation();
-    setIsFavorited(!isFavorited);
-  };
-
-  const openModal = () => {
-    setShowModal(true);
-    document.body.style.overflow = 'hidden'; 
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-    document.body.style.overflow = 'unset'; 
-  };
-
-  const productAge = getProductAge(product.productId);
+  const productAge = product.ageRange || "Age not specified";
   const productRating = getProductRating(product.productId);
 
   return (
     <>
-      <div 
-        className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden group h-full flex flex-col cursor-pointer"
-        onClick={openModal}
-      >
-        <div className="relative overflow-hidden bg-gradient-to-br from-pink-50 to-blue-50 p-4 h-64">
+      <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden flex flex-col h-full">
+        <div className="relative h-64 bg-gradient-to-br from-pink-50 to-purple-50 flex items-center justify-center overflow-hidden">
           <img
-            src={product.imageUrl}
+            src={getImageSrc(product.imageUrl)}
             alt={product.name}
-            className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
+            className="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-105"
             onError={(e) => {
-              e.target.src = `https://via.placeholder.com/300x300?text=${encodeURIComponent(
-                product.name
-              )}`;
+              e.target.src =
+                "https://via.placeholder.com/300x300?text=Image+Not+Found";
             }}
           />
 
           <button
-            onClick={toggleFavorite}
-            className="absolute top-2 right-2 p-2 rounded-full bg-white/80 hover:bg-white shadow-md transition-all duration-200 hover:scale-110 z-10"
+            onClick={() => setIsFavorited(!isFavorited)}
+            className="absolute top-3 right-3 w-10 h-10 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md hover:bg-white transition-transform duration-200 transform hover:scale-110"
           >
             {isFavorited ? (
-              <FaHeart className="text-red-500 text-sm" />
+              <FaHeart className="text-red-500 text-lg" />
             ) : (
-              <FaRegHeart className="text-gray-600 text-sm" />
+              <FaRegHeart className="text-gray-600 text-lg" />
             )}
           </button>
 
-
-          <div className="absolute top-2 left-2 bg-yellow-400 text-yellow-900 px-2 py-1 rounded-full text-xs font-semibold">
+          <div className="absolute top-3 left-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-md">
             {productAge}
           </div>
 
-
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 flex items-center justify-center">
-            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 px-3 py-1 rounded-full text-sm font-medium text-gray-800">
-              Click for details
-            </div>
-          </div>
+          <button
+            onClick={() => setShowModal(true)}
+            className="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition duration-300 flex items-center justify-center"
+          >
+            <span className="bg-white text-gray-800 px-4 py-2 rounded-full font-semibold shadow-md transform translate-y-4 hover:translate-y-0 transition-transform duration-300">
+              Quick View
+            </span>
+          </button>
         </div>
 
+        <div className="flex flex-col justify-between flex-grow p-6">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-1">
+              {renderStars(productRating)}
+            </div>
+            <span className="text-sm text-gray-600 font-medium">
+              {productRating}
+            </span>
+            <span className="text-xs text-gray-400">
+              ({Math.floor(Math.random() * 50) + 10} reviews)
+            </span>
+          </div>
 
-        <div className="p-4 sm:p-5 flex flex-col flex-grow">
-          <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2 line-clamp-2 hover:text-blue-600 transition-colors duration-200 min-h-[3.5rem]">
+          <h3 className="text-lg font-bold text-gray-900 mb-1 line-clamp-2">
             {product.name}
           </h3>
 
-          <p className="text-gray-600 text-sm sm:text-base mb-3 line-clamp-2 leading-relaxed min-h-[2.5rem]">
+          <p className="text-sm text-gray-600 line-clamp-2 mb-4">
             {product.description}
           </p>
 
-          <div className="flex items-center mb-3 min-h-[1.5rem]">
-            <div className="flex space-x-1">{renderStars(productRating)}</div>
-            <span className="text-gray-500 text-sm ml-2">({productRating})</span>
-          </div>
+          <div className="flex items-end justify-between mt-auto">
+            <span className="text-2xl font-bold text-purple-600">
+              ${product.price}
+            </span>
 
-          <div className="mb-4 min-h-[2rem]">
-            <div className="flex items-center space-x-2 flex-wrap gap-1">
-              <div className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
-                ✓ Safe Materials
-              </div>
-              <div className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
-                ✓ Educational
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between mt-auto">
-            <div className="flex flex-col">
-              <span className="text-xl sm:text-2xl font-bold text-green-600">
-                ${product.price}
-              </span>
-              <span className="text-gray-500 text-xs line-through">
-                ${(product.price * 1.2).toFixed(2)}
-              </span>
-            </div>
-
-            <button
-              onClick={handleAddToCart}
-              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-3 py-2 rounded-lg flex items-center space-x-2 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl min-w-[80px] justify-center"
-            >
-              <GiShoppingCart className="text-base" />
-              <span className="font-semibold text-sm">Add</span>
+            <button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-5 py-2.5 rounded-full font-semibold shadow-md hover:shadow-lg transition-transform duration-200 transform hover:scale-105 flex items-center gap-2">
+              <GiShoppingCart className="text-lg" />
+              <span className="text-sm">Buy Now</span>
             </button>
           </div>
         </div>
       </div>
 
+      {/* Product Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            {/* Modal Header */}
-            <div className="flex items-center justify-between p-6 border-b">
-              <h2 className="text-2xl font-bold text-gray-800">Product Details</h2>
+          <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[95vh] overflow-y-auto">
+            <div className="relative">
               <button
-                onClick={closeModal}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
+                onClick={() => setShowModal(false)}
+                className="absolute top-4 right-4 w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center z-10 transition-colors duration-200"
               >
                 <FaTimes className="text-gray-600" />
               </button>
-            </div>
 
-            <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="bg-gradient-to-br from-pink-50 to-blue-50 rounded-xl p-6 flex items-center justify-center">
-                  <img
-                    src={product.imageUrl}
-                    alt={product.name}
-                    className="w-full h-96 object-contain"
-                    onError={(e) => {
-                      e.target.src = `https://via.placeholder.com/400x400?text=${encodeURIComponent(
-                        product.name
-                      )}`;
-                    }}
-                  />
-                </div>
+              <div className="p-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="relative">
+                    <Zoom>
+                      <img
+                        src={getImageSrc(product.imageUrl)}
+                        alt={product.name}
+                        className="w-full h-72 md:h-[28rem] object-contain rounded-xl"
+                        onError={(e) => {
+                          e.target.src =
+                            "https://via.placeholder.com/400x400?text=Image+Not+Found";
+                        }}
+                      />
+                    </Zoom>
 
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-3xl font-bold text-gray-800 mb-2">{product.name}</h3>
-                    <div className="flex items-center space-x-3 mb-4">
-                      <div className="bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-sm font-semibold">
-                        Age: {productAge}
-                      </div>
-                      <div className="flex items-center">
-                        <div className="flex space-x-1 mr-2">{renderStars(productRating)}</div>
-                        <span className="text-gray-600">({productRating})</span>
-                      </div>
+                    <div className="absolute top-3 left-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-md">
+                      {productAge}
                     </div>
                   </div>
 
-                  <div>
-                    <h4 className="text-lg font-semibold text-gray-800 mb-2">Description</h4>
-                    <p className="text-gray-600 leading-relaxed">{product.description}</p>
-                  </div>
-
-                  <div>
-                    <h4 className="text-lg font-semibold text-gray-800 mb-3">Features</h4>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                        <div className="flex items-center space-x-2">
-                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                          <span className="text-green-800 font-medium">Safe Materials</span>
-                        </div>
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="flex items-center gap-1">
+                        {renderStars(productRating)}
                       </div>
-                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                        <div className="flex items-center space-x-2">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                          <span className="text-blue-800 font-medium">Educational</span>
-                        </div>
-                      </div>
-                      <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
-                        <div className="flex items-center space-x-2">
-                          <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                          <span className="text-purple-800 font-medium">Durable</span>
-                        </div>
-                      </div>
-                      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                        <div className="flex items-center space-x-2">
-                          <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                          <span className="text-yellow-800 font-medium">Fun & Engaging</span>
-                        </div>
-                      </div>
+                      <span className="text-sm text-gray-600">
+                        {productRating}
+                      </span>
                     </div>
-                  </div>
 
-                  <div className="bg-gray-50 rounded-xl p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <div>
-                        <span className="text-3xl font-bold text-green-600">${product.price}</span>
-                        <span className="text-gray-500 text-lg line-through ml-2">
-                          ${(product.price * 1.2).toFixed(2)}
-                        </span>
-                      </div>
-                      <button
-                        onClick={toggleFavorite}
-                        className="p-3 rounded-full hover:bg-white shadow-md transition-all duration-200"
-                      >
-                        {isFavorited ? (
-                          <FaHeart className="text-red-500 text-xl" />
-                        ) : (
-                          <FaRegHeart className="text-gray-600 text-xl" />
-                        )}
-                      </button>
+                    <h2 className="text-3xl font-bold text-gray-900">
+                      {product.name}
+                    </h2>
+
+                    <p className="text-gray-600 leading-relaxed text-base">
+                      {product.description}
+                    </p>
+
+                    <div className="text-4xl font-bold text-purple-600">
+                      ${product.price}
                     </div>
-                    
-                    <button
-                      onClick={handleAddToCart}
-                      className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white py-3 rounded-lg flex items-center justify-center space-x-2 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl text-lg font-semibold"
-                    >
+
+                    <button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-3 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 flex items-center justify-center gap-2">
                       <GiShoppingCart className="text-xl" />
-                      <span>Add to Cart</span>
+                      Add to Cart
                     </button>
                   </div>
                 </div>

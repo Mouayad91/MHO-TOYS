@@ -27,24 +27,24 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException e) {
-        ErrorResponse errorResponse = new ErrorResponse(
+    public ResponseEntity<ApiResponse> handleResourceNotFoundException(ResourceNotFoundException e) {
+        ApiResponse apiResponse = new ApiResponse(
             LocalDateTime.now(), 
             HttpStatus.NOT_FOUND.value(), 
             e.getMessage(), 
             "/api/products"
         );
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException e) {
-        ErrorResponse errorResponse = new ErrorResponse(
+    public ResponseEntity<ApiResponse> handleRuntimeException(RuntimeException e) {
+        ApiResponse apiResponse = new ApiResponse(
             LocalDateTime.now(), 
             HttpStatus.BAD_REQUEST.value(), 
             e.getMessage(), 
             "/api/products"
         );
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
     }
 }

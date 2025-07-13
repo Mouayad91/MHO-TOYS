@@ -8,15 +8,15 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class ErrorResponse {
+public class ApiResponse {
     private LocalDateTime timestamp;
     private int status;
     private String error;
     private String path;
 
-    public ErrorResponse() {}
+    public ApiResponse() {}
 
-    public ErrorResponse(LocalDateTime timestamp, int status, String error, String path) {
+    public ApiResponse(LocalDateTime timestamp, int status, String error, String path) {
         this.timestamp = timestamp;
         this.status = status;
         this.error = error;
