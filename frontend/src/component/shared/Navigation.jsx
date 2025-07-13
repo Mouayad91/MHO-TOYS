@@ -44,7 +44,11 @@ const Navigation = ()=>{
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="hover:text-softGreen transition-colors">
+                <Link 
+                  to="/contact" 
+                  className="block hover:text-softGreen transition-colors py-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
                   Contact
                 </Link>
               </li>
@@ -89,7 +93,6 @@ const Navigation = ()=>{
           </div>
         </div>
 
-        {/* Mobile Menu */}
         <div className={`lg:hidden transition-all duration-300 ease-in-out ${
           isMobileMenuOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'
         } overflow-hidden`}>

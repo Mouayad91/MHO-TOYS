@@ -1,11 +1,8 @@
-import React from 'react';
 import aboutImage from '../../assets/aboutImage.jpg';
-import Navigation from '../shared/Navigation';
 
 const About = () => {
   return (
     <div className="min-h-screen bg-white">
-      <Navigation />
       
       <section className="relative bg-gradient-to-r from-pink-50 to-blue-50 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -47,7 +44,6 @@ const About = () => {
               </div>
             </div>
 
-            {/* Content Section */}
             <div className="space-y-8">
               <div>
                 <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
