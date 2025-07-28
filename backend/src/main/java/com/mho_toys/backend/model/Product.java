@@ -1,6 +1,5 @@
 package com.mho_toys.backend.model;
 
-
 import java.time.Instant;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -24,7 +23,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-
 @Entity
 @Table(name = "products")
 @Getter
@@ -39,10 +37,8 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
 
-
-    @NotBlank( message = "Toy name cannot be blank")
+    @NotBlank(message = "Toy name cannot be blank")
     @Size(min = 3, max = 25, message = "Toy name must be between 3 and 25 characters")
-
     private String name;
 
     @NotBlank(message = "Toy description cannot be blank")
@@ -64,9 +60,11 @@ public class Product {
 
     @CreatedDate
     private Instant createdAt;
+    
     private String createdBy;
 
     @LastModifiedDate
     private Instant updatedAt;
+    
     private String updatedBy;
 }

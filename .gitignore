@@ -24,8 +24,8 @@ build/
 Thumbs.db
 
 ### ———Sensitive Spring files———
-backend/src/main/resources/application.properties
-backend/src/main/resources/application-*.properties
+# backend/src/main/resources/application.properties
+# backend/src/main/resources/application-*.properties
 # Keep template file
 !backend/src/main/resources/application.properties.template
 

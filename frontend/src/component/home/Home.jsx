@@ -33,10 +33,7 @@ const Home = () => {
   };
 
   return (
-
-    
     <div className="bg-white">
-      <SliderBanner />
       {loading ? (
         <div className="flex flex-col items-center justify-center h-[calc(100vh-80px)] text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mb-4"></div>

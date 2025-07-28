@@ -22,8 +22,17 @@ const Contact = () => {
       alert("Please accept the privacy policy.");
       return;
     }
-    console.log("Submitted contact form:", formData);
+    
+    // Here you would typically send data to your backend
     alert("Thank you! We will get back to you soon.");
+    
+    // Reset form after submission
+    setFormData({
+      name: "",
+      email: "",
+      message: "",
+      privacyAccepted: false,
+    });
   };
 
   return (

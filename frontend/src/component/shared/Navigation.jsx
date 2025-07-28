@@ -1,14 +1,152 @@
 
 import { GiShoppingCart } from "react-icons/gi";
+import { FaUser, FaSignOutAlt, FaUserShield } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
-const Navigation = ()=>{
-
- const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+const Navigation = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isAuthenticated, user, logout, isAdmin } = useAuth();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success("Logged out successfully!");
+      setIsMobileMenuOpen(false);
+    } catch (error) {
+      toast.error("Logout failed");
+    }
+  };
+
+  // Auth Navigation Items for Desktop
+  const AuthNavItems = () => {
+    if (isAuthenticated) {
+      return (
+        <div className="flex items-center gap-4 text-softBlue text-sm xl:text-base font-primary">
+          <span className="text-gray-600">Welcome, {user?.username}</span>
+          
+          {isAdmin() && (
+            <Link 
+              to="/admin" 
+              className="flex items-center gap-1 hover:text-softGreen transition-colors"
+              title="Admin Dashboard"
+            >
+              <FaUserShield />
+              <span>Admin</span>
+            </Link>
+          )}
+          
+          <Link 
+            to="/profile" 
+            className="flex items-center gap-1 hover:text-softGreen transition-colors"
+          >
+            <FaUser />
+            <span>Profile</span>
+          </Link>
+          
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-1 hover:text-red-500 transition-colors"
+          >
+            <FaSignOutAlt />
+            <span>Logout</span>
+          </button>
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex items-center gap-4 text-softBlue text-sm xl:text-base font-primary">
+        <Link 
+          to="/auth/login" 
+          className="hover:text-softGreen transition-colors"
+        >
+          Login
+        </Link>
+        <Link 
+          to="/auth/register" 
+          className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg transition-colors"
+        >
+          Sign Up
+        </Link>
+      </div>
+    );
+  };
+
+  // Auth Navigation Items for Mobile
+  const MobileAuthNavItems = () => {
+    if (isAuthenticated) {
+      return (
+        <>
+          <li className="pt-2 border-t border-gray-100">
+            <span className="block text-gray-600 py-2">Welcome, {user?.username}</span>
+          </li>
+          
+          {isAdmin() && (
+            <li>
+              <Link 
+                to="/admin" 
+                className="flex items-center gap-2 hover:text-softGreen transition-colors py-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <FaUserShield />
+                <span>Admin Dashboard</span>
+              </Link>
+            </li>
+          )}
+          
+          <li>
+            <Link 
+              to="/profile" 
+              className="flex items-center gap-2 hover:text-softGreen transition-colors py-2"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <FaUser />
+              <span>Profile</span>
+            </Link>
+          </li>
+          
+          <li>
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 hover:text-red-500 transition-colors py-2 w-full text-left"
+            >
+              <FaSignOutAlt />
+              <span>Logout</span>
+            </button>
+          </li>
+        </>
+      );
+    }
+
+    return (
+      <>
+        <li className="pt-2 border-t border-gray-100">
+          <Link 
+            to="/auth/login" 
+            className="block hover:text-softGreen transition-colors py-2"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Login
+          </Link>
+        </li>
+        <li>
+          <Link 
+            to="/auth/register" 
+            className="block bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg transition-colors text-center"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Sign Up
+          </Link>
+        </li>
+      </>
+    );
   };
 
   return (
@@ -31,6 +169,7 @@ const Navigation = ()=>{
             </span>
           </Link>
 
+          {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-6">
             <ul className="flex items-center gap-6 font-primary text-softBlue text-sm xl:text-base">
               <li>
@@ -44,34 +183,29 @@ const Navigation = ()=>{
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="/contact" 
-                  className="block hover:text-softGreen transition-colors py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
+                <Link to="/contact" className="hover:text-softGreen transition-colors">
                   Contact
                 </Link>
               </li>
             </ul>
 
-            <div className="flex items-center gap-4 text-softBlue text-sm xl:text-base font-primary">
-              <Link to="/cart" className="hover:text-softGreen transition-colors text-xl relative">
+            <div className="flex items-center gap-4">
+              <Link to="/cart" className="text-softBlue hover:text-softGreen transition-colors text-xl relative">
                 <GiShoppingCart />
                 <span className="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
               </Link>
-              <Link to="/login" className="hover:text-softGreen transition-colors">
-                Login
-              </Link>
+              
+              <AuthNavItems />
             </div>
           </div>
 
+          {/* Mobile Menu Button & Cart */}
           <div className="flex items-center gap-3 lg:hidden">
             <Link to="/cart" className="text-softBlue hover:text-softGreen transition-colors text-xl relative">
               <GiShoppingCart />
               <span className="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">0</span>
             </Link>
 
-            {/* Mobile Menu Button */}
             <button
               onClick={toggleMobileMenu}
               className="text-softBlue hover:text-softGreen transition-colors p-2"
@@ -93,8 +227,9 @@ const Navigation = ()=>{
           </div>
         </div>
 
+        {/* Mobile Menu */}
         <div className={`lg:hidden transition-all duration-300 ease-in-out ${
-          isMobileMenuOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'
+          isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         } overflow-hidden`}>
           <div className="py-4 border-t border-gray-100">
             <ul className="space-y-4 font-primary text-softBlue">
@@ -125,15 +260,8 @@ const Navigation = ()=>{
                   Contact
                 </Link>
               </li>
-              <li className="pt-2 border-t border-gray-100">
-                <Link 
-                  to="/login" 
-                  className="block hover:text-softGreen transition-colors py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Login
-                </Link>
-              </li>
+              
+              <MobileAuthNavItems />
             </ul>
           </div>
         </div>

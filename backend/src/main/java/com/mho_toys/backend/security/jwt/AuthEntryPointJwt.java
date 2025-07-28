@@ -1,0 +1,63 @@
+package com.mho_toys.backend.security.jwt;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * AuthEntryPointJwt handles unauthorized access attempts in the MHO TOYS application.
+ * It returns structured JSON responses instead of default HTML error pages,
+ * making it suitable for REST API consumption.
+ */
+@Component
+public class AuthEntryPointJwt implements AuthenticationEntryPoint {
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);
+
+    @Override
+    public void commence(HttpServletRequest request, HttpServletResponse response, 
+                        AuthenticationException authException) throws IOException, ServletException {
+        
+        logger.error("Unauthorized error: {}", authException.getMessage());
+        logger.warn("Unauthorized access attempt from IP: {} to path: {}", 
+                   getClientIpAddress(request), request.getServletPath());
+
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+        final Map<String, Object> body = new HashMap<>();
+        body.put("status", HttpServletResponse.SC_UNAUTHORIZED);
+        body.put("error", "Unauthorized");
+        body.put("message", authException.getMessage());
+        body.put("path", request.getServletPath());
+        body.put("timestamp", LocalDateTime.now().toString());
+
+        final ObjectMapper mapper = new ObjectMapper();
+        mapper.writeValue(response.getOutputStream(), body);
+    }
+
+    /**
+     * Get the real client IP address, considering potential proxy headers
+     */
+    private String getClientIpAddress(HttpServletRequest request) {
+        String xForwardedForHeader = request.getHeader("X-Forwarded-For");
+        if (xForwardedForHeader == null) {
+            return request.getRemoteAddr();
+        } else {
+            // X-Forwarded-For can contain multiple IPs, get the first one
+            return xForwardedForHeader.split(",")[0].trim();
+        }
+    }
+} 

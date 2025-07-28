@@ -2,8 +2,6 @@ import React from "react";
 import ProductCard from "./ProductCard";
 
 const ProductLists = ({ products = [] }) => {
-  console.log('ProductLists received:', products?.length, 'products');
-
   return (
     <section className="py-12 bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

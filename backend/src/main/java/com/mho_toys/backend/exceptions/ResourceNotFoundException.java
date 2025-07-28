@@ -1,6 +1,5 @@
 package com.mho_toys.backend.exceptions;
 
-
 public class ResourceNotFoundException extends RuntimeException {
 
     String resourceName;
@@ -8,8 +7,8 @@ public class ResourceNotFoundException extends RuntimeException {
     String fieldName;
     Long fieldID;
 
-
     public ResourceNotFoundException(String s) {
+        super(s);
     }
 
     public ResourceNotFoundException(String resourceName, String field, String fieldName) {
