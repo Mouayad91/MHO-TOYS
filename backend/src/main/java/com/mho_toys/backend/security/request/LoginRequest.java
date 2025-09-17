@@ -7,10 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * LoginRequest represents the data structure for user authentication requests
- * in the MHO TOYS e-commerce application.
- */
 @Getter
 @Setter
 @NoArgsConstructor

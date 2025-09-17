@@ -16,11 +16,6 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * AuthEntryPointJwt handles unauthorized access attempts in the MHO TOYS application.
- * It returns structured JSON responses instead of default HTML error pages,
- * making it suitable for REST API consumption.
- */
 @Component
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
 
@@ -48,9 +43,6 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
         mapper.writeValue(response.getOutputStream(), body);
     }
 
-    /**
-     * Get the real client IP address, considering potential proxy headers
-     */
     private String getClientIpAddress(HttpServletRequest request) {
         String xForwardedForHeader = request.getHeader("X-Forwarded-For");
         if (xForwardedForHeader == null) {

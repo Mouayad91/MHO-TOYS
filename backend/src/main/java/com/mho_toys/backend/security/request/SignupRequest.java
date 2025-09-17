@@ -9,10 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * SignupRequest represents the data structure for user registration requests
- * in the MHO TOYS e-commerce application.
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

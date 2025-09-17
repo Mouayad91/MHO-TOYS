@@ -54,10 +54,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.validation.Valid;
 
-/**
- * AuthController handles authentication and user management endpoints
- * for the MHO TOYS e-commerce application.
- */
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin(origins = "${frontend.url}", maxAge = 3600, allowCredentials = "true")
@@ -86,9 +82,6 @@ public class AuthController {
     @Autowired
     private com.mho_toys.backend.security.service.UserDetailsServiceImpl userDetailsService;
 
-    /**
-     * User login endpoint with comprehensive security features
-     */
     @PostMapping("/public/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest,
                                              HttpServletRequest request) {
@@ -205,9 +198,6 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * User registration endpoint with comprehensive validation
-     */
     @PostMapping("/public/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest,
                                          HttpServletRequest request) {
@@ -277,9 +267,6 @@ public class AuthController {
         return ResponseEntity.ok(MessageResponse.success("User registered successfully!"));
     }
 
-    /**
-     * Get current user profile information
-     */
     @GetMapping("/user")
     public ResponseEntity<UserInfoResponse> getUserDetails(@AuthenticationPrincipal UserDetails userDetails) {
         logger.debug("Profile request for user: {}", userDetails.getUsername());
@@ -311,9 +298,6 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * Get current username (simple endpoint for UI)
-     */
     @GetMapping("/username")
     public ResponseEntity<Map<String, String>> getCurrentUsername(@AuthenticationPrincipal UserDetails userDetails) {
         Map<String, String> response = new HashMap<>();
@@ -321,9 +305,6 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    /**
-     * Change password endpoint
-     */
     @PostMapping("/change-password")
     public ResponseEntity<MessageResponse> changePassword(
             @AuthenticationPrincipal UserDetails userDetails,
@@ -352,9 +333,6 @@ public class AuthController {
 
 
 
-        /**
-     * Password reset request endpoint
-     */
     @PostMapping("/public/forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestParam String email) {
         logger.info("Password reset requested for email: {}", email);
@@ -369,9 +347,6 @@ public class AuthController {
         }
     }
 
-    /**
-     * Password reset with token endpoint
-     */
     @PostMapping("/public/reset-password")
     public ResponseEntity<?> resetPassword(
         @RequestParam String token, 
@@ -387,9 +362,6 @@ public class AuthController {
         }
     }
 
-    /**
-     * Enhanced logout endpoint that clears httpOnly cookie
-     */
     @PostMapping("/logout")
     public ResponseEntity<MessageResponse> secureLogout(HttpServletRequest request, 
                                                       HttpServletResponse response) {
@@ -414,9 +386,6 @@ public class AuthController {
         }
     }
 
-    /**
-     * Initialize admin user if not exists (for development/testing)
-     */
     @PostMapping("/public/init-admin")
     public ResponseEntity<?> initializeAdminUser() {
         logger.info("Initializing admin user");
@@ -458,12 +427,6 @@ public class AuthController {
         }
     }
 
-    /**
-     * Get client IP address from request
-     */
-    /**
-     * Set authentication token as httpOnly cookie
-     */
     @PostMapping("/set-token")
     public ResponseEntity<?> setAuthToken(@RequestBody Map<String, String> request, 
                                          HttpServletResponse response) {
@@ -492,9 +455,6 @@ public class AuthController {
         }
     }
 
-    /**
-     * Get client IP address from request
-     */
     private String getClientIpAddress(HttpServletRequest request) {
         String xForwardedForHeader = request.getHeader("X-Forwarded-For");
         if (xForwardedForHeader == null || xForwardedForHeader.isEmpty()) {

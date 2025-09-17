@@ -30,10 +30,6 @@ import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWrite
 
 import java.time.LocalDate;
 
-/**
- * SecurityConfig provides comprehensive security configuration for the MHO TOYS e-commerce application
- * including JWT authentication, CSRF protection, and security headers.
- */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(
@@ -51,9 +47,6 @@ public class SecurityConfig {
         return new AuthTokenFilter();
     }
 
-    /**
-     * Security Filter Chain configuration with comprehensive security settings
-     */
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -73,85 +66,11 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .ignoringRequestMatchers(
-                                "/api/auth/public/**",
-                                "/api/csrf-token",
-                                 "/api/auth/set-token",
-                                "/images/**",
-                                "/error",
-                                "/actuator/**"
-                        )
-                )
-
-                // Session Management - Stateless for JWT
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-
-                // Authorization Configuration
-                .authorizeHttpRequests(authz -> authz
-                        // Public endpoints
-                        .requestMatchers("/api/auth/public/**").permitAll()
-                        .requestMatchers("/api/csrf-token").permitAll()
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        
-                        // Static resources
-                        .requestMatchers("/images/**").permitAll()
-                        .requestMatchers("/error").permitAll()
-                        .requestMatchers("/actuator/health").permitAll()
-                        
-                        // Product endpoints (customers can view, admin can manage)
-                        .requestMatchers(HttpMethod.GET, "/api/products").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
-                        .requestMatchers("/api/admin/products/**").hasRole("ADMIN")
-                        
-                        // Admin endpoints
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        
-                        // All other requests require authentication
-                        .anyRequest().authenticated()
-                )
-
-                // Exception Handling
-                .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(unauthorizedHandler)
-                )
-
-                // Authentication Provider
-                .authenticationProvider(authenticationProvider())
-                
-                // JWT Token Filter
-                .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
-
-                // Security Headers
-                .headers(headers -> headers
-                        .frameOptions().deny()
-                        .contentTypeOptions().and()
-                        .httpStrictTransportSecurity(hstsConfig -> hstsConfig
-                                .maxAgeInSeconds(31536000)
-                                .includeSubDomains(true)
-                                .preload(true)
-                        )
-                        .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
-                )
-
-                // Disable basic auth and form login
-                .httpBasic(AbstractHttpConfigurer::disable)
-                .formLogin(AbstractHttpConfigurer::disable);
-
-        return http.build();
-    }
-
-    /**
-     * UserDetailsService Bean
-     */
     @Bean
     public UserDetailsServiceImpl userDetailsService() {
         return new UserDetailsServiceImpl();
     }
 
-    /**
-     * DaoAuthenticationProvider Bean
-     */
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -160,25 +79,16 @@ public class SecurityConfig {
         return authProvider;
     }
 
-    /**
-     * Authentication Manager Bean
-     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
 
-    /**
-     * Password Encoder Bean - BCrypt with strength 12 for enhanced security
-     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
     }
 
-    /**
-     * Initialize default users and roles on application startup
-     */
     @Bean
     public CommandLineRunner initializeDefaultData(RoleRepository roleRepository, 
                                                   UserRepository userRepository,

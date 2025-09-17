@@ -2,9 +2,6 @@ package com.mho_toys.backend.utils;
 
 import java.util.regex.Pattern;
 
-/**
- * Input validation utility for backend security
- */
 public class InputValidator {
     
     // Common SQL injection patterns
@@ -30,9 +27,6 @@ public class InputValidator {
         "^[A-Za-z0-9+_.-]+@([A-Za-z0-9.-]+\\.[A-Za-z]{2,})$"
     );
     
-    /**
-     * Sanitize text input by removing dangerous characters
-     */
     public static String sanitizeText(String input) {
         if (input == null) {
             return null;
@@ -44,9 +38,6 @@ public class InputValidator {
             .trim();
     }
     
-    /**
-     * Validate text input for SQL injection attempts
-     */
     public static boolean containsSQLInjection(String input) {
         if (input == null) {
             return false;
@@ -54,9 +45,6 @@ public class InputValidator {
         return SQL_INJECTION_PATTERN.matcher(input).matches();
     }
     
-    /**
-     * Validate text input for XSS attempts
-     */
     public static boolean containsXSS(String input) {
         if (input == null) {
             return false;
@@ -64,9 +52,6 @@ public class InputValidator {
         return XSS_PATTERN.matcher(input).matches();
     }
     
-    /**
-     * Validate email format
-     */
     public static boolean isValidEmail(String email) {
         if (email == null) {
             return false;
@@ -74,9 +59,6 @@ public class InputValidator {
         return EMAIL_PATTERN.matcher(email).matches() && email.length() <= 50;
     }
     
-    /**
-     * Validate filename for security
-     */
     public static boolean isValidFilename(String filename) {
         if (filename == null) {
             return false;
@@ -84,9 +66,6 @@ public class InputValidator {
         return VALID_FILENAME_PATTERN.matcher(filename).matches() && filename.length() <= 255;
     }
     
-    /**
-     * Validate product name
-     */
     public static boolean isValidProductName(String name) {
         if (name == null || name.trim().isEmpty()) {
             return false;
@@ -99,9 +78,6 @@ public class InputValidator {
                !containsXSS(trimmed);
     }
     
-    /**
-     * Validate product description
-     */
     public static boolean isValidProductDescription(String description) {
         if (description == null || description.trim().isEmpty()) {
             return false;
@@ -114,16 +90,10 @@ public class InputValidator {
                !containsXSS(trimmed);
     }
     
-    /**
-     * Validate price
-     */
     public static boolean isValidPrice(Double price) {
         return price != null && price >= 0 && price <= 999999.99;
     }
     
-    /**
-     * Validate age range
-     */
     public static boolean isValidAgeRange(String ageRange) {
         if (ageRange == null) {
             return false;
@@ -136,9 +106,6 @@ public class InputValidator {
         return agePattern.matcher(ageRange).matches() && ageRange.length() <= 50;
     }
     
-    /**
-     * Validate username
-     */
     public static boolean isValidUsername(String username) {
         if (username == null) {
             return false;
@@ -150,9 +117,6 @@ public class InputValidator {
                !containsXSS(username);
     }
     
-    /**
-     * Validate password strength
-     */
     public static boolean isValidPassword(String password) {
         if (password == null) {
             return false;
@@ -166,9 +130,6 @@ public class InputValidator {
         return passwordPattern.matcher(password).matches();
     }
     
-    /**
-     * Sanitize and validate input text for general use
-     */
     public static String validateAndSanitize(String input, int maxLength) {
         if (input == null) {
             return null;
@@ -186,9 +147,6 @@ public class InputValidator {
         return sanitized;
     }
     
-    /**
-     * Validate URL for images
-     */
     public static boolean isValidImageUrl(String url) {
         if (url == null || url.trim().isEmpty()) {
             return true; // Allow empty URLs

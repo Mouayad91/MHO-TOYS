@@ -20,10 +20,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-/**
- * AuthTokenFilter processes JWT tokens from incoming requests and sets up the security context
- * for authenticated users in the MHO TOYS e-commerce application.
- */
 @Component
 public class AuthTokenFilter extends OncePerRequestFilter {
 
@@ -80,9 +76,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    /**
-     * Extract JWT token from the Authorization header or cookies
-     */
     private String parseJwt(HttpServletRequest request) {
         // First try Authorization header
         String jwt = jwtUtils.getJwtFromHeader(request);
@@ -96,9 +89,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         return jwt;
     }
 
-    /**
-     * Extract JWT token from httpOnly cookies
-     */
     private String getJwtFromCookies(HttpServletRequest request) {
         if (request.getCookies() != null) {
             for (jakarta.servlet.http.Cookie cookie : request.getCookies()) {
@@ -112,9 +102,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         return null;
     }
 
-    /**
-     * Skip JWT processing for certain paths (like public authentication endpoints)
-     */
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getServletPath();

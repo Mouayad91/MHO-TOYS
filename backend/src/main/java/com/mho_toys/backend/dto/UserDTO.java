@@ -9,10 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * UserDTO represents user data for transfer between service layers
- * in the MHO TOYS e-commerce application.
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

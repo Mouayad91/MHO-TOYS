@@ -31,12 +31,6 @@ public class JwtUtils {
     @Value("${mho.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
-    /**
-     * Extracts the JWT token from the Authorization header of the HTTP request.
-     *
-     * @param request the HTTP request containing the Authorization header
-     * @return the JWT token as a String, or null if not found or improperly formatted
-     */
     public String getJwtFromHeader(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         logger.debug("Authorization Header: {}", bearerToken != null ? "Bearer [PROTECTED]" : "null");
@@ -47,12 +41,6 @@ public class JwtUtils {
         return null;
     }
 
-    /**
-     * Generates a JWT token for the given UserDetails.
-     *
-     * @param userDetails the UserDetails object containing user information
-     * @return a JWT token as a String
-     */
     public String generateTokenFromUsername(UserDetails userDetails) {
         String username = userDetails.getUsername();
         Date now = new Date();
@@ -68,13 +56,6 @@ public class JwtUtils {
                 .compact();
     }
 
-    /**
-     * Generates a JWT token with custom expiration time.
-     *
-     * @param userDetails the UserDetails object containing user information
-     * @param expirationMs custom expiration time in milliseconds
-     * @return a JWT token as a String
-     */
     public String generateTokenWithCustomExpiration(UserDetails userDetails, long expirationMs) {
         String username = userDetails.getUsername();
         Date now = new Date();
@@ -90,12 +71,6 @@ public class JwtUtils {
                 .compact();
     }
 
-    /**
-     * Retrieves the username from the JWT token.
-     *
-     * @param token the JWT token as a String
-     * @return the username extracted from the token
-     */
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parser()
                 .verifyWith((SecretKey) key())
@@ -105,12 +80,6 @@ public class JwtUtils {
                 .getSubject();
     }
 
-    /**
-     * Retrieves the expiration date from the JWT token.
-     *
-     * @param token the JWT token as a String
-     * @return the expiration date as a Date object
-     */
     public Date getExpirationDateFromJwtToken(String token) {
         return Jwts.parser()
                 .verifyWith((SecretKey) key())
@@ -120,33 +89,15 @@ public class JwtUtils {
                 .getExpiration();
     }
 
-    /**
-     * Checks if the JWT token is expired.
-     *
-     * @param token the JWT token as a String
-     * @return true if the token is expired, false otherwise
-     */
     public boolean isJwtTokenExpired(String token) {
         Date expiration = getExpirationDateFromJwtToken(token);
         return expiration.before(new Date());
     }
 
-    /**
-     * Retrieves the signing key for JWT tokens.
-     *
-     * @return the signing key
-     */
     private Key key() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
     }
 
-    /**
-     * Validates the JWT token by checking its signature, expiration, and format.
-     * Includes comprehensive error logging for security monitoring.
-     *
-     * @param authToken the JWT token as a String
-     * @return true if the token is valid, false otherwise
-     */
     public boolean validateJwtToken(String authToken) {
         try {
             logger.debug("Validating JWT token");
@@ -171,13 +122,6 @@ public class JwtUtils {
         return false;
     }
 
-    /**
-     * Validates the JWT token and username combination.
-     *
-     * @param token the JWT token
-     * @param userDetails the user details
-     * @return true if the token is valid for the user, false otherwise
-     */
     public boolean validateTokenForUser(String token, UserDetails userDetails) {
         final String username = getUserNameFromJwtToken(token);
         return (username.equals(userDetails.getUsername()) && !isJwtTokenExpired(token));

@@ -43,9 +43,6 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
-    /**
-     * Get all users (admin only)
-     */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers(@AuthenticationPrincipal UserDetails adminUser) {
@@ -57,9 +54,6 @@ public class AdminController {
         return ResponseEntity.ok(users);
     }
 
-    /**
-     * Get user by ID (admin only)
-     */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/users/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id,
@@ -75,9 +69,6 @@ public class AdminController {
         }
     }
 
-    /**
-     * Update user role (admin only)
-     */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/users/{userId}/role")
     public ResponseEntity<MessageResponse> updateUserRole(@PathVariable Long userId,
@@ -103,9 +94,6 @@ public class AdminController {
         }
     }
 
-    /**
-     * Enable user account (admin only)
-     */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/users/{userId}/enable")
     public ResponseEntity<MessageResponse> enableUser(@PathVariable Long userId,
@@ -128,9 +116,6 @@ public class AdminController {
         }
     }
 
-    /**
-     * Disable user account (admin only)
-     */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/users/{userId}/disable")
     public ResponseEntity<MessageResponse> disableUser(@PathVariable Long userId,
@@ -153,9 +138,6 @@ public class AdminController {
         }
     }
 
-    /**
-     * Lock user account (admin only)
-     */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/users/{userId}/lock")
     public ResponseEntity<MessageResponse> lockUser(@PathVariable Long userId,
@@ -178,9 +160,6 @@ public class AdminController {
         }
     }
 
-    /**
-     * Unlock user account (admin only)
-     */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/users/{userId}/unlock")
     public ResponseEntity<MessageResponse> unlockUser(@PathVariable Long userId,
@@ -203,9 +182,6 @@ public class AdminController {
         }
     }
 
-    /**
-     * Delete user account (admin only)
-     */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/users/{userId}")
     public ResponseEntity<MessageResponse> deleteUser(@PathVariable Long userId,
@@ -236,9 +212,6 @@ public class AdminController {
         }
     }
 
-    /**
-     * Get admin dashboard statistics
-     */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/statistics")
     public ResponseEntity<Map<String, Object>> getAdminStatistics(@AuthenticationPrincipal UserDetails adminUser) {
@@ -276,9 +249,6 @@ public class AdminController {
         }
     }
 
-    /**
-     * Get users with failed login attempts (admin only)
-     */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/security/failed-attempts")
     public ResponseEntity<List<User>> getUsersWithFailedAttempts(@RequestParam(defaultValue = "3") int minAttempts,
@@ -289,9 +259,6 @@ public class AdminController {
         return ResponseEntity.ok(users);
     }
 
-    /**
-     * Get inactive users (admin only)
-     */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/security/inactive-users")
     public ResponseEntity<List<User>> getInactiveUsers(@RequestParam(defaultValue = "90") int daysSinceLastLogin,
@@ -303,9 +270,6 @@ public class AdminController {
         return ResponseEntity.ok(users);
     }
 
-    /**
-     * Reset all failed login attempts (admin only)
-     */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/security/reset-failed-attempts")
     public ResponseEntity<MessageResponse> resetAllFailedAttempts(@AuthenticationPrincipal UserDetails adminUser,
@@ -327,9 +291,6 @@ public class AdminController {
         }
     }
 
-    /**
-     * Unlock all user accounts (admin only)
-     */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/security/unlock-all-accounts")
     public ResponseEntity<MessageResponse> unlockAllAccounts(@AuthenticationPrincipal UserDetails adminUser,
@@ -351,9 +312,6 @@ public class AdminController {
         }
     }
 
-    /**
-     * Update user profile (admin only)
-     */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/users/{userId}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long userId,
@@ -374,9 +332,6 @@ public class AdminController {
         }
     }
 
-    /**
-     * Get client IP address from request
-     */
     private String getClientIpAddress(HttpServletRequest request) {
         String xForwardedForHeader = request.getHeader("X-Forwarded-For");
         if (xForwardedForHeader == null || xForwardedForHeader.isEmpty()) {

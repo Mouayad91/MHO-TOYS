@@ -8,10 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * LoginResponse represents the authentication response containing JWT token
- * and user information for the MHO TOYS e-commerce application.
- */
 @Getter
 @Setter
 @NoArgsConstructor

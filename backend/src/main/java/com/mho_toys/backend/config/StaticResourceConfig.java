@@ -9,8 +9,3 @@ public class StaticResourceConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // Serve /images/** from the local folder 'images/'
-        registry.addResourceHandler("/images/**")
-                .addResourceLocations("file:images/"); // file-system location
-    }
-}

@@ -105,9 +105,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
     }
 
-    /**
-     * Sanitize error messages to prevent information disclosure
-     */
     private String sanitizeErrorMessage(String message) {
         if (message == null) {
             return "An error occurred";
@@ -126,9 +123,6 @@ public class GlobalExceptionHandler {
         return sanitized.length() > 200 ? sanitized.substring(0, 200) + "..." : sanitized;
     }
 
-    /**
-     * Get the current request path safely
-     */
     private String getRequestPath() {
         try {
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();

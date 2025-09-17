@@ -8,10 +8,6 @@ import org.springframework.stereotype.Service;
 import com.mho_toys.backend.dto.UserDTO;
 import com.mho_toys.backend.model.User;
 
-/**
- * UserService interface defining user management operations
- * for the MHO TOYS e-commerce application.
- */
 @Service
 public interface UserService {
     
