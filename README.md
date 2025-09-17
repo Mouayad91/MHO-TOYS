@@ -1,4 +1,4 @@
-#  MHO TOYS - E-Commerce Platform
+# MHO TOYS - E-Commerce Platform
 
 A modern, full-stack e-commerce web application for toy retail, featuring secure authentication, admin dashboard, and comprehensive product management.
 
@@ -6,10 +6,10 @@ A modern, full-stack e-commerce web application for toy retail, featuring secure
 
 MHO TOYS is a complete e-commerce solution built for toy retailers. The platform provides:
 
--  **Customer Features**: Product browsing, shopping cart, secure checkout
--  **Admin Dashboard**: User management, product management, order tracking
--  **Security**: JWT authentication, role-based access control, secure data handling
-- 📱 **Responsive Design**: Mobile-first approach with modern UI/UX
+- **Customer Features**: Product browsing, shopping cart, secure checkout
+- **Admin Dashboard**: User management, product management, order tracking
+- **Security**: JWT authentication, role-based access control, secure data handling
+- **Responsive Design**: Mobile-first approach with modern UI/UX
 
 ## Tech Stack
 
@@ -33,50 +33,50 @@ MHO TOYS is a complete e-commerce solution built for toy retailers. The platform
 - **Axios** - HTTP client
 - **React Hot Toast** - Notifications
 
-##  Prerequisites
+## Prerequisites
 
-Before running this application, make sure you have:
+- **PostgreSQL** - Database server
 
-- **Java 17+** installed
-- **Node.js 18+** and npm installed
+## Quick Start
 
-# MHO TOYS
+### Backend Setup
 
-MHO TOYS is a full-stack e-commerce web application for toy retail. It features secure authentication, an admin dashboard, and product management.
-
-## Tech Stack
-
-**Backend:** Java 17, Spring Boot, Spring Security, Spring Data JPA, PostgreSQL, JWT
-
-**Frontend:** React, Vite, Tailwind CSS, Material-UI, Axios
-
-## How to Run
-
-1. Create a PostgreSQL database named `mho-toys` and update credentials in `backend/src/main/resources/application.properties`.
-2. Start the backend:
+1. Ensure PostgreSQL is running with database `mho_toys_db`
+2. Update database credentials in `backend/src/main/resources/application.properties`
+3. Set environment variables:
+   - `DB_USERNAME` (default: postgres)
+   - `DB_PASSWORD` (required)
+   - `JWT_SECRET` (required - 64+ characters)
+   - `ADMIN_PASSWORD` (required)
+4. Start backend:
    ```bash
    cd backend
    mvn spring-boot:run
    ```
-3. Start the frontend:
+
+### Frontend Setup
+
+1. Install dependencies and start:
    ```bash
    cd frontend
    npm install
    npm run dev
    ```
-4. Open `http://localhost:5174` in your browser.
+2. Open `http://localhost:5174` in your browser
 
-## Default Accounts
+## Default Test Account
 
-**Admin:**
-
-- Username: admin
-- Password: 1253225
-
-**Customer:**
+**Customer Test Account:**
 
 - Username: customer
 - Password: Customer@2024!
 
-Contributions are not accepted for this project.
-npm run dev
+**Admin Account:** Created automatically using your `ADMIN_PASSWORD` environment variable.
+
+## Security Notice
+
+This application uses environment variables for sensitive configuration. Ensure all required environment variables are set before deployment.
+
+---
+
+**Note:** This is a personal project. Contributions are not accepted.

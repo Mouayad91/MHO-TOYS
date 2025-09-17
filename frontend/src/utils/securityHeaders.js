@@ -97,9 +97,9 @@ class SecurityHeaders {
     document.createElement = function(tagName) {
       const element = originalCreateElement.call(this, tagName);
       
-      // Log suspicious script creation
+      // Log suspicious script creation in development only
       if (tagName.toLowerCase() === 'script' && import.meta.env.DEV) {
-        console.warn('Script element created:', element);
+        // Development logging removed for production
       }
       
       return element;
@@ -108,7 +108,7 @@ class SecurityHeaders {
     // Monitor for eval attempts
     const originalEval = window.eval;
     window.eval = function(code) {
-      console.warn('eval() usage detected - potential security risk');
+      // Security warning removed for production
       return originalEval.call(this, code);
     };
   }

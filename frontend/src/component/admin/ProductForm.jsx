@@ -42,7 +42,7 @@ const ProductForm = () => {
         setImagePreview(product.imageUrl);
       }
     } catch (error) {
-      console.error('Error fetching product:', error);
+      
       toast.error('Failed to load product details');
       navigate('/admin/products');
     } finally {
@@ -126,14 +126,14 @@ const ProductForm = () => {
           });
           toast.success('Product image uploaded successfully');
         } catch (imgError) {
-          console.error('Error uploading image:', imgError);
+          
           toast.error('Product saved but image upload failed');
         }
       }
 
       navigate('/admin/products');
     } catch (error) {
-      console.error('Error saving product:', error);
+      
       toast.error(error.response?.data?.message || 'Failed to save product');
     } finally {
       setSubmitting(false);

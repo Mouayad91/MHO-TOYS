@@ -21,7 +21,7 @@ class SecureStorage {
 
       return true;
     } catch (error) {
-      console.error('Error setting token:', error);
+      // Error handled silently in production
       throw error;
     }
   }
@@ -42,7 +42,7 @@ class SecureStorage {
       }
       return null;
     } catch (error) {
-      console.warn('Token validation failed:', error);
+      // Error handled silently in production
       return null;
     }
   }
@@ -58,10 +58,10 @@ class SecureStorage {
       });
 
       if (!response.ok) {
-        console.warn('Logout request failed:', response.status);
+        // Silent warning in production
       }
     } catch (error) {
-      console.error('Error clearing token:', error);
+      
     }
   }
 
@@ -71,7 +71,7 @@ class SecureStorage {
       sessionStorage.setItem(key, JSON.stringify(data));
       return true;
     } catch (error) {
-      console.error('Error storing user data:', error);
+      
       return false;
     }
   }
@@ -81,7 +81,7 @@ class SecureStorage {
       const data = sessionStorage.getItem(key);
       return data ? JSON.parse(data) : null;
     } catch (error) {
-      console.error('Error retrieving user data:', error);
+      
       return null;
     }
   }
@@ -95,7 +95,7 @@ class SecureStorage {
       }
       return true;
     } catch (error) {
-      console.error('Error clearing user data:', error);
+      
       return false;
     }
   }
@@ -122,7 +122,7 @@ class SecureStorage {
       
       return true;
     } catch (error) {
-      console.error('Error migrating from localStorage:', error);
+      
       return false;
     }
   }

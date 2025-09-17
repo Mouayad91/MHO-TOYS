@@ -397,8 +397,13 @@ public class AuthController {
                 return ResponseEntity.ok(MessageResponse.success("Admin user already exists"));
             }
             
-            // Create admin user
-            User admin = new User("admin", "admin@mhotoys.com", encoder.encode("1253225"));
+            // Create admin user with secure password
+            String adminPassword = System.getenv("ADMIN_PASSWORD");
+            if (adminPassword == null) {
+                adminPassword = "ChangeMe2024!"; // Default - MUST BE CHANGED
+            }
+            
+            User admin = new User("admin", "admin@mhotoys.com", encoder.encode(adminPassword));
             
             // Get admin role
             Role adminRole = roleRepository.findByRoleName(ApplicationRole.ROLE_ADMIN)

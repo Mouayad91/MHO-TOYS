@@ -19,7 +19,7 @@ const ProductList = () => {
       const response = await api.get('/products');
       setProducts(response.data);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      
       toast.error('Failed to load products');
     } finally {
       setLoading(false);
@@ -37,7 +37,7 @@ const ProductList = () => {
       toast.success('Product deleted successfully');
       fetchProducts();
     } catch (error) {
-      console.error('Error deleting product:', error);
+      
       toast.error('Failed to delete product');
     } finally {
       setDeleteLoading(null);
@@ -57,7 +57,7 @@ const ProductList = () => {
       toast.success('Image updated successfully');
       fetchProducts();
     } catch (error) {
-      console.error('Error uploading image:', error);
+      
       toast.error('Failed to update image');
     }
   };

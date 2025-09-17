@@ -18,7 +18,7 @@ const UserManagement = () => {
       const response = await api.get('/admin/users');
       setUsers(response.data);
     } catch (error) {
-      console.error('Error fetching users:', error);
+      // Error logging removed for production
       toast.error('Failed to load users');
     } finally {
       setLoading(false);
@@ -32,7 +32,7 @@ const UserManagement = () => {
       toast.success('User role updated successfully');
       fetchUsers();
     } catch (error) {
-      console.error('Error updating role:', error);
+      // Error logging removed for production
       toast.error('Failed to update user role');
     } finally {
       setActionLoading(prev => ({ ...prev, [`role-${userId}`]: false }));
@@ -84,7 +84,7 @@ const UserManagement = () => {
       toast.success(successMessage);
       fetchUsers();
     } catch (error) {
-      console.error(`Error performing ${action}:`, error);
+      // Error logging removed for production
       toast.error(error.response?.data?.message || `Failed to ${action} user`);
     } finally {
       setActionLoading(prev => ({ ...prev, [actionKey]: false }));

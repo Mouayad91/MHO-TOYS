@@ -24,7 +24,7 @@ const AdminStats = () => {
       const response = await api.get('/admin/statistics');
       setStats(response.data);
     } catch (error) {
-      console.error('Error fetching stats:', error);
+      
       toast.error('Failed to load statistics');
     }
   };
@@ -34,7 +34,7 @@ const AdminStats = () => {
       const response = await api.get('/products');
       setProducts(response.data);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      
     } finally {
       setLoading(false);
     }

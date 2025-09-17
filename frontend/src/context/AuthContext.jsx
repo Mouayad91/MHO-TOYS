@@ -130,7 +130,7 @@ export const AuthProvider = ({ children }) => {
               return;
             }
           } catch (error) {
-            console.warn('Token validation failed:', error);
+            
           }
         }
         
@@ -140,7 +140,7 @@ export const AuthProvider = ({ children }) => {
         dispatch({ type: AUTH_ACTIONS.SET_LOADING, payload: false });
         
       } catch (error) {
-        console.error('Error restoring authentication:', error);
+        
         // Clear corrupted auth data
         await SecureStorage.clearAuthToken();
         SecureStorage.clearUserData();
@@ -242,7 +242,7 @@ export const AuthProvider = ({ children }) => {
       // Clear secure token (this also calls backend logout)
       await SecureStorage.clearAuthToken();
     } catch (error) {
-      console.error('Logout API call failed:', error);
+      
     } finally {
       // Clear session data regardless of API call success
       SecureStorage.clearUserData();

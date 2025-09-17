@@ -109,8 +109,14 @@ public class SecurityConfig {
 
             // Create default admin user if not exists
             if (!userRepository.existsByUserName("admin")) {
+                // Use environment variable for admin password - CHANGE THIS!
+                String adminPassword = System.getenv("ADMIN_PASSWORD");
+                if (adminPassword == null) {
+                    adminPassword = "ChangeMe2024!"; // Default - MUST BE CHANGED
+                }
+                
                 User admin = new User("admin", "admin@mhotoys.com",
-                        passwordEncoder.encode("1253225"));
+                        passwordEncoder.encode(adminPassword));
                 
                 // Set admin properties
                 admin.setRole(adminRole);
@@ -125,7 +131,8 @@ public class SecurityConfig {
                 admin.setCreatedBy("SYSTEM");
                 
                 userRepository.save(admin);
-                System.out.println("Default admin user created: admin / 1253225");
+                System.out.println("WARNING: Default admin user created. CHANGE PASSWORD IMMEDIATELY!");
+                System.out.println("Username: admin / Password: " + adminPassword);
             }
 
             // Create default customer user if not exists

@@ -93,7 +93,7 @@ const Login = () => {
         toast.error(result.error || 'Login failed');
       }
     } catch (error) {
-      console.error('Login error:', error);
+      // Error logging removed for production
       toast.error('An unexpected error occurred');
     } finally {
       setIsSubmitting(false);

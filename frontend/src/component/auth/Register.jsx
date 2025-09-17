@@ -173,7 +173,7 @@ const Register = () => {
         toast.error(result.error || 'Registration failed');
       }
     } catch (error) {
-      console.error('Registration error:', error);
+      // Error logging removed for production
       toast.error('An unexpected error occurred');
     } finally {
       setIsSubmitting(false);
