@@ -78,5 +78,3 @@ MHO TOYS is a complete e-commerce solution built for toy retailers. The platform
 This application uses environment variables for sensitive configuration. Ensure all required environment variables are set before deployment.
 
 ---
-
-**Note:** This is a personal project. Contributions are not accepted.
