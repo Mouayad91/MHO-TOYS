@@ -1,25 +1,17 @@
 package com.mho_toys.backend.security;
 
-import com.mho_toys.backend.model.ApplicationRole;
-import com.mho_toys.backend.model.Role;
-import com.mho_toys.backend.model.User;
-import com.mho_toys.backend.repository.RoleRepository;
-import com.mho_toys.backend.repository.UserRepository;
-import com.mho_toys.backend.security.jwt.AuthEntryPointJwt;
-import com.mho_toys.backend.security.jwt.AuthTokenFilter;
-import com.mho_toys.backend.security.service.UserDetailsServiceImpl;
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,7 +20,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 
-import java.time.LocalDate;
+import com.mho_toys.backend.model.ApplicationRole;
+import com.mho_toys.backend.model.Role;
+import com.mho_toys.backend.model.User;
+import com.mho_toys.backend.repository.RoleRepository;
+import com.mho_toys.backend.repository.UserRepository;
+import com.mho_toys.backend.security.jwt.AuthEntryPointJwt;
+import com.mho_toys.backend.security.jwt.AuthTokenFilter;
+import com.mho_toys.backend.security.service.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
@@ -65,7 +64,49 @@ public class SecurityConfig {
                 // CSRF Configuration
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                        .ignoringRequestMatchers(
+                        .ignoringRequestMatchers("/api/auth/**", "/api/public/**"))
+
+                // Authorization rules
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/public/**").permitAll()
+                        .requestMatchers("/uploads/**").permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
+                )
+
+                // Exception handling
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(unauthorizedHandler)
+                )
+
+                // Session management
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+
+                // Security headers
+                .headers(headers -> headers
+                        .contentSecurityPolicy(csp -> csp
+                                .policyDirectives("default-src 'self'; " +
+                                        "script-src 'self' 'unsafe-inline'; " +
+                                        "style-src 'self' 'unsafe-inline'; " +
+                                        "img-src 'self' data: https:; " +
+                                        "font-src 'self' data:; " +
+                                        "connect-src 'self'"))
+                        .referrerPolicy(referrer -> referrer
+                                .policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN))
+                        .xssProtection(xss -> xss.disable())
+                        .frameOptions(frame -> frame.deny())
+                );
+
+        // Add authentication provider and filter
+        http.authenticationProvider(authenticationProvider());
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+
     @Bean
     public UserDetailsServiceImpl userDetailsService() {
         return new UserDetailsServiceImpl();

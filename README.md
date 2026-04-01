@@ -11,6 +11,12 @@ MHO TOYS is a complete e-commerce solution built for toy retailers. The platform
 - **Security**: JWT authentication, role-based access control, secure data handling
 - **Responsive Design**: Mobile-first approach with modern UI/UX
 
+## Screenshots
+
+![UI Screenshot 1](frontend/public/images/UI1.JPG)
+![UI Screenshot 2](frontend/public/images/UI2.JPG)
+![UI Screenshot 3](frontend/public/images/UI3.JPG)
+
 ## Tech Stack
 
 ### Backend
